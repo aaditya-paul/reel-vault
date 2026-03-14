@@ -25,7 +25,7 @@ Stop endlessly scrolling through your Instagram "Saved" folder trying to find th
 - **Framework:** FastAPI (Python)
 - **Database:** PostgreSQL + `pgvector` (via Docker)
 - **ORM:** SQLAlchemy + Alembic (Migrations)
-- **AI/ML:** OpenAI APIs (Embeddings & Vision/Transcription simulation)
+- **AI/ML:** Google Gemini APIs (Embeddings & Vision/Transcription simulation)
 
 ---
 
@@ -86,7 +86,7 @@ The frontend UI will now be available at `http://localhost:3000`.
 2. **Save Single URL (`/save`):** Paste a public URL and watch the background worker queue the ingestion task.
 3. **Import Archive (`/import`):** Upload an Instagram `.zip` export to see the bulk deduplication and extraction logic in action.
 
-*Note: For this initial MVP run, the heavy LLM extraction processes (Audio/OCR) and OpenAI Embeddings are simulated with fast mock responses so you don't need to provide private API keys immediately.*
+*Note: For this initial MVP run, the heavy LLM extraction processes (Audio/OCR) and Gemini Embeddings are simulated with fast mock responses so you don't need to provide private API keys immediately.*
 
 ## 🔒 Privacy & Compliance
 ReelVault operates entirely on **user-provided data**. We do not use private Instagram APIs or scrape logged-in sessions, strictly adhering to platform terms of service while giving users full control over their exported archives.

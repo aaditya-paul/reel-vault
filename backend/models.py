@@ -26,7 +26,7 @@ class SavedItem(Base):
     category = Column(String)
     language = Column(String)
     thumbnail_url = Column(String)
-    embedding_vector = Column(Vector(1536))
+    embedding_vector = Column(Vector(768))
     source = Column(String)
     source_collection = Column(String)
     timestamp = Column(DateTime(timezone=True))

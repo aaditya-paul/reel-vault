@@ -21,7 +21,7 @@ def process_url_task(item_id: int, url: str):
     # In a real app, this runs in Celery. For this MVP we will simulate processing.
     # 1. Fetch DOM or download video stream
     # 2. Extract transcript/OCR
-    # 3. Call Claude/GPT-4o-mini to get tags and description
+    # 3. Call Gemini 1.5 Flash to get tags and description
     # 4. Generate Text Embedding 
     # 5. Save to database
     pass

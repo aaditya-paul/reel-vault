@@ -10,32 +10,37 @@ import models
 from routers.items import get_current_user_id
 
 # In production this should be a singleton client from a services module
-import openai
+from google import genai
+import google.genai.types
 
 router = APIRouter(prefix="/api/search", tags=["Search"])
 
-# Dummy API Key check for MVP
-openai.api_key = os.getenv("OPENAI_API_KEY", "mock-key")
+# Initialize Gemini Client
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "mock-key")
+try:
+    client = genai.Client(api_key=GEMINI_API_KEY)
+except Exception:
+    client = None
 
 class SearchQuery(BaseModel):
     query: str
     limit: Optional[int] = 20
 
 def get_embedding(text: str) -> List[float]:
-    """Get embedding from OpenAI API. Fallback to mock for testing if no key."""
-    if openai.api_key == "mock-key" or not openai.api_key:
-        # Return random/mock vector measuring 1536 dim
-        return [0.0] * 1536
+    """Get embedding from Gemini API. Fallback to mock for testing if no key."""
+    if GEMINI_API_KEY == "mock-key" or not GEMINI_API_KEY or not client:
+        # Return random/mock vector measuring 768 dim for Gemini text-embedding-004
+        return [0.0] * 768
         
     try:
-        response = openai.embeddings.create(
-            input=text,
-            model="text-embedding-3-small"
+        response = client.models.embed_content(
+            model="text-embedding-004",
+            contents=text,
         )
-        return response.data[0].embedding
+        return response.embeddings[0].values
     except Exception as e:
         print(f"Embedding error: {e}")
-        return [0.0] * 1536
+        return [0.0] * 768
 
 @router.post("")
 def search_vault(search: SearchQuery, db: Session = Depends(get_db), user_id: int = Depends(get_current_user_id)):

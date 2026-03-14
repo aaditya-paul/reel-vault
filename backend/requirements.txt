@@ -9,4 +9,4 @@ python-multipart
 celery
 redis
 requests
-openai
+google-genai
