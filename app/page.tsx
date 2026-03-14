@@ -1,65 +1,51 @@
-import Image from "next/image";
+import Link from 'next/link';
+import { Sparkles, DownloadCloud, Link as LinkIcon, ArrowRight } from 'lucide-react';
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+    <div className="flex flex-col items-center justify-center min-h-full p-8 max-w-4xl mx-auto text-center">
+      <div className="inline-flex items-center justify-center p-2 bg-purple-500/10 rounded-2xl mb-8 ring-1 ring-purple-500/20 shadow-[0_0_30px_rgba(168,85,247,0.15)] animate-pulse">
+        <Sparkles className="text-purple-400 w-8 h-8" />
+      </div>
+      
+      <h1 className="text-5xl font-extrabold tracking-tight mb-6 bg-gradient-to-br from-white to-neutral-400 bg-clip-text text-transparent">
+        Welcome to your <br/>Personal Memory Vault
+      </h1>
+      
+      <p className="text-lg text-neutral-400 max-w-xl mb-12">
+        ReelVault is your private, AI-powered library for short-form content. 
+        Save natively or import, and search everything using natural language.
+      </p>
+      
+      <div className="grid md:grid-cols-2 gap-6 w-full">
+        {/* Mode A */}
+        <Link href="/save" className="group relative p-8 rounded-3xl bg-neutral-900 border border-neutral-800 hover:border-purple-500/50 hover:bg-neutral-800/80 transition-all duration-300 overflow-hidden flex flex-col items-start text-left">
+          <div className="absolute top-0 right-0 p-8 opacity-0 group-hover:opacity-100 transition-opacity translate-x-4 group-hover:translate-x-0">
+            <ArrowRight className="text-purple-400" />
+          </div>
+          <div className="p-3 bg-neutral-800/50 rounded-xl mb-6 shadow-inner ring-1 ring-white/5 group-hover:bg-purple-500/20 group-hover:ring-purple-500/30 transition-all">
+            <LinkIcon className="text-neutral-300 group-hover:text-purple-400" size={24} />
+          </div>
+          <h2 className="text-2xl font-semibold mb-2 text-white">Start Fresh</h2>
+          <p className="text-neutral-400">
+            Paste links to Reels, TikToks, and YouTube Shorts one by one to build your collection going forward.
           </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+        </Link>
+        
+        {/* Mode B */}
+        <Link href="/import" className="group relative p-8 rounded-3xl bg-neutral-900 border border-neutral-800 hover:border-pink-500/50 hover:bg-neutral-800/80 transition-all duration-300 overflow-hidden flex flex-col items-start text-left">
+          <div className="absolute top-0 right-0 p-8 opacity-0 group-hover:opacity-100 transition-opacity translate-x-4 group-hover:translate-x-0">
+            <ArrowRight className="text-pink-400" />
+          </div>
+          <div className="p-3 bg-neutral-800/50 rounded-xl mb-6 shadow-inner ring-1 ring-white/5 group-hover:bg-pink-500/20 group-hover:ring-pink-500/30 transition-all">
+            <DownloadCloud className="text-neutral-300 group-hover:text-pink-400" size={24} />
+          </div>
+          <h2 className="text-2xl font-semibold mb-2 text-white">Import Instagram</h2>
+          <p className="text-neutral-400">
+            Upload your Instagram Data Download (ZIP) to instantly extract and process your entire historical save collection.
+          </p>
+        </Link>
+      </div>
     </div>
   );
 }

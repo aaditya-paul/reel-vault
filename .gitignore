@@ -39,3 +39,24 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# --- Backend generated ignores ---
+# Environments
+backend/venv/
+backend/env/
+venv/
+env/
+ENV/
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# IDE and Editor
+.idea/
+.vscode/
+
+# Database / Volumes
+reelvault_postgres_data/
+postgres_data/
