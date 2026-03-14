@@ -1,5 +1,6 @@
-import Link from 'next/link';
-import { Compass, DownloadCloud, Sparkles, Wand2, ShieldCheck, ChevronRight } from 'lucide-react';
+'use client';
+
+import { Compass, DownloadCloud, Sparkles, ChevronRight } from 'lucide-react';
 import { useSession, signIn } from "next-auth/react";
 import { useRouter } from 'next/navigation';
 

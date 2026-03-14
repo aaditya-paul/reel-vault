@@ -1,5 +1,7 @@
+'use client';
+
 import { useState, useEffect } from 'react';
-import { Search, Compass, ExternalLink, Loader2, Sparkles } from 'lucide-react';
+import { Compass, ExternalLink, Loader2, Sparkles } from 'lucide-react';
 import { useSession } from "next-auth/react";
 
 interface SavedItem {
