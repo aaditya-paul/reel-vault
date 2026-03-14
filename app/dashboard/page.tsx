@@ -1,7 +1,6 @@
-'use client';
-
 import { useState, useEffect } from 'react';
 import { Search, Compass, ExternalLink, Loader2, Sparkles } from 'lucide-react';
+import { useSession } from "next-auth/react";
 
 interface SavedItem {
   id: number;
@@ -17,6 +16,7 @@ interface SavedItem {
 }
 
 export default function DashboardPage() {
+  const { data: session } = useSession();
   const [items, setItems] = useState<SavedItem[]>([]);
   const [query, setQuery] = useState('');
   const [loading, setLoading] = useState(true);
@@ -28,11 +28,19 @@ export default function DashboardPage() {
         ? 'http://localhost:8000/api/search' 
         : 'http://localhost:8000/api/vault/items';
         
-      const options = searchQuery ? {
+      const options: RequestInit = searchQuery ? {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${session?.user?.email || ''}`
+        },
         body: JSON.stringify({ query: searchQuery, limit: 20 })
-      } : { method: 'GET' };
+      } : { 
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${session?.user?.email || ''}`
+        }
+      };
 
       const res = await fetch(endpoint, options);
       if (res.ok) {

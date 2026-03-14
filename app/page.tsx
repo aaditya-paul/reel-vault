@@ -1,51 +1,82 @@
 import Link from 'next/link';
-import { Sparkles, DownloadCloud, Link as LinkIcon, ArrowRight } from 'lucide-react';
+import { Compass, DownloadCloud, Sparkles, Wand2, ShieldCheck, ChevronRight } from 'lucide-react';
+import { useSession, signIn } from "next-auth/react";
+import { useRouter } from 'next/navigation';
 
-export default function Home() {
+export default function LandingPage() {
+  const { data: session, status } = useSession();
+  const router = useRouter();
+
+  const handleStartFresh = () => {
+    if (session) {
+      router.push('/save');
+    } else {
+      signIn('google', { callbackUrl: '/save' });
+    }
+  };
+
+  const handleImport = () => {
+    if (session) {
+      router.push('/import');
+    } else {
+      signIn('google', { callbackUrl: '/import' });
+    }
+  };
   return (
     <div className="flex flex-col items-center justify-center min-h-full p-8 max-w-4xl mx-auto text-center">
       <div className="inline-flex items-center justify-center p-2 bg-purple-500/10 rounded-2xl mb-8 ring-1 ring-purple-500/20 shadow-[0_0_30px_rgba(168,85,247,0.15)] animate-pulse">
-        <Sparkles className="text-purple-400 w-8 h-8" />
+        <Sparkles className="text-purple-400 w-6 h-6 mr-2" />
+        <span className="text-purple-300 font-medium tracking-wide">Powered by Google Gemini</span>
       </div>
       
-      <h1 className="text-5xl font-extrabold tracking-tight mb-6 bg-gradient-to-br from-white to-neutral-400 bg-clip-text text-transparent">
-        Welcome to your <br/>Personal Memory Vault
+      <h1 className="text-6xl md:text-7xl font-extrabold mb-6 tracking-tight text-transparent bg-clip-text bg-linear-to-r from-purple-400 via-pink-500 to-red-500 pb-2">
+        Your Second Brain <br /> for Short Content.
       </h1>
       
-      <p className="text-lg text-neutral-400 max-w-xl mb-12">
+      <p className="text-xl text-neutral-400 mb-16 max-w-2xl leading-relaxed">
         ReelVault is your private, AI-powered library for short-form content. 
         Save natively or import, and search everything using natural language.
       </p>
-      
-      <div className="grid md:grid-cols-2 gap-6 w-full">
-        {/* Mode A */}
-        <Link href="/save" className="group relative p-8 rounded-3xl bg-neutral-900 border border-neutral-800 hover:border-purple-500/50 hover:bg-neutral-800/80 transition-all duration-300 overflow-hidden flex flex-col items-start text-left">
-          <div className="absolute top-0 right-0 p-8 opacity-0 group-hover:opacity-100 transition-opacity translate-x-4 group-hover:translate-x-0">
-            <ArrowRight className="text-purple-400" />
-          </div>
-          <div className="p-3 bg-neutral-800/50 rounded-xl mb-6 shadow-inner ring-1 ring-white/5 group-hover:bg-purple-500/20 group-hover:ring-purple-500/30 transition-all">
-            <LinkIcon className="text-neutral-300 group-hover:text-purple-400" size={24} />
-          </div>
-          <h2 className="text-2xl font-semibold mb-2 text-white">Start Fresh</h2>
-          <p className="text-neutral-400">
-            Paste links to Reels, TikToks, and YouTube Shorts one by one to build your collection going forward.
-          </p>
-        </Link>
-        
-        {/* Mode B */}
-        <Link href="/import" className="group relative p-8 rounded-3xl bg-neutral-900 border border-neutral-800 hover:border-pink-500/50 hover:bg-neutral-800/80 transition-all duration-300 overflow-hidden flex flex-col items-start text-left">
-          <div className="absolute top-0 right-0 p-8 opacity-0 group-hover:opacity-100 transition-opacity translate-x-4 group-hover:translate-x-0">
-            <ArrowRight className="text-pink-400" />
-          </div>
-          <div className="p-3 bg-neutral-800/50 rounded-xl mb-6 shadow-inner ring-1 ring-white/5 group-hover:bg-pink-500/20 group-hover:ring-pink-500/30 transition-all">
-            <DownloadCloud className="text-neutral-300 group-hover:text-pink-400" size={24} />
-          </div>
-          <h2 className="text-2xl font-semibold mb-2 text-white">Import Instagram</h2>
-          <p className="text-neutral-400">
-            Upload your Instagram Data Download (ZIP) to instantly extract and process your entire historical save collection.
-          </p>
-        </Link>
-      </div>
+
+      <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto w-full">
+          
+          {/* Option A: Start Fresh */}
+          <button onClick={handleStartFresh} className="group relative break-inside-avoid bg-neutral-900 border border-neutral-800 rounded-3xl p-8 hover:border-purple-500/50 transition-all text-left overflow-hidden flex flex-col items-start justify-start shadow-xl">
+            <div className="absolute inset-0 bg-linear-to-br from-purple-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+            
+            <div className="w-14 h-14 bg-purple-500/20 rounded-2xl flex items-center justify-center mb-6 ring-1 ring-purple-500/30 group-hover:scale-110 transition-transform">
+              <Compass className="text-purple-400 w-7 h-7" />
+            </div>
+            
+            <h2 className="text-2xl font-bold text-white mb-2 group-hover:text-purple-300 transition-colors">Start Fresh</h2>
+            <p className="text-neutral-400 leading-relaxed mb-8">
+              Paste links from Instagram, TikTok, or YouTube Shorts one by one. Build your curated vault from scratch.
+            </p>
+            
+            <div className="mt-auto flex items-center text-purple-400 font-medium group-hover:translate-x-2 transition-transform">
+              Begin saving <ChevronRight className="w-5 h-5 ml-1" />
+            </div>
+          </button>
+
+          {/* Option B: Import Archive */}
+          <button onClick={handleImport} className="group relative break-inside-avoid bg-neutral-900 border border-neutral-800 rounded-3xl p-8 hover:border-blue-500/50 transition-all text-left overflow-hidden flex flex-col items-start justify-start shadow-xl">
+            <div className="absolute inset-0 bg-linear-to-br from-blue-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+            
+            <div className="w-14 h-14 bg-blue-500/20 rounded-2xl flex items-center justify-center mb-6 ring-1 ring-blue-500/30 group-hover:scale-110 transition-transform">
+              <DownloadCloud className="text-blue-400 w-7 h-7" />
+            </div>
+            
+            <h2 className="text-2xl font-bold text-white mb-2 group-hover:text-blue-300 transition-colors">Import Archive</h2>
+            <p className="text-neutral-400 leading-relaxed mb-8">
+              Upload your official Instagram Data Export ZIP. We'll automatically secure and index all your historical saved reels.
+            </p>
+            
+            <div className="mt-auto flex items-center text-blue-400 font-medium group-hover:translate-x-2 transition-transform">
+              Upload ZIP <ChevronRight className="w-5 h-5 ml-1" />
+            </div>
+          </button>
+
+        </div>
     </div>
   );
 }

@@ -20,6 +20,7 @@ Stop endlessly scrolling through your Instagram "Saved" folder trying to find th
 - **Framework:** Next.js (React) App Router
 - **Styling:** Tailwind CSS + Lucide Icons
 - **State/Fetching:** Native React hooks + Fetch API
+- **Authentication:** NextAuth.js (Google OAuth)
 
 ### Backend
 - **Framework:** FastAPI (Python)
@@ -73,6 +74,12 @@ Open a **new terminal window**.
 # From the project root
 npm install
 
+# Make a copy of the front-end environment file
+cp .env.example .env.local
+```
+**Important:** You must fill out `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, and `NEXTAUTH_SECRET` inside your `.env.local` file by creating an OAuth 2.0 Client in the [Google Cloud Console](https://console.cloud.google.com/).
+
+```bash
 # Start the Next.js development server
 npm run dev
 ```

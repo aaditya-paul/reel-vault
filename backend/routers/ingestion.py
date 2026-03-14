@@ -6,10 +6,13 @@ import json
 import zipfile
 import tempfile
 import shutil
+from typing import Optional
 
 from database import get_db
 import models
-from routers.items import get_current_user_id
+from models import SavedItem, ImportTask
+from routers.search import get_embedding
+from dependencies import get_current_user
 
 router = APIRouter(prefix="/api/ingestion", tags=["Ingestion"])
 
@@ -31,9 +34,9 @@ def save_url(
     req: SaveUrlRequest, 
     background_tasks: BackgroundTasks, 
     db: Session = Depends(get_db), 
-    user_id: int = Depends(get_current_user_id)
+    user_id: int = Depends(get_current_user)
 ):
-    """Save a public URL to the vault and enqueue for processing."""
+    """Mode A: Start Fresh - Saves a single URL and queues background processing."""
     # 1. Check for duplicates
     existing = db.query(models.SavedItem).filter(
         models.SavedItem.user_id == user_id, 
@@ -64,9 +67,9 @@ async def upload_file(
     file: UploadFile = File(...),
     background_tasks: BackgroundTasks = BackgroundTasks(),
     db: Session = Depends(get_db),
-    user_id: int = Depends(get_current_user_id)
+    user_id: int = Depends(get_current_user)
 ):
-    """Endpoint for direct media uploads (Mode A)."""
+    """Mode A: Start Fresh - Handles direct media file uploads."""
     # Create temp file
     fd, temp_path = tempfile.mkstemp(suffix=f"_{file.filename}")
     with os.fdopen(fd, "wb") as buffer:
@@ -92,9 +95,9 @@ async def import_instagram(
     file: UploadFile = File(...),
     background_tasks: BackgroundTasks = BackgroundTasks(),
     db: Session = Depends(get_db),
-    user_id: int = Depends(get_current_user_id)
+    user_id: int = Depends(get_current_user)
 ):
-    """Endpoint for uploading and parsing Instagram ZIP export (Mode B)."""
+    """Mode B: Import Instagram - Handles ZIP uploads and queues extraction."""
     if not file.filename.endswith('.zip'):
         raise HTTPException(status_code=400, detail="Must be a ZIP file")
         

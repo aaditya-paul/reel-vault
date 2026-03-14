@@ -3,6 +3,8 @@ import { Inter } from 'next/font/google';
 import './globals.css';
 import Link from 'next/link';
 import { Home, Compass, DownloadCloud, Settings, Link as LinkIcon } from 'lucide-react';
+import { Providers } from '@/components/Providers';
+import { SidebarProfile } from '@/components/SidebarProfile';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -28,28 +30,35 @@ export default function RootLayout({
             </h1>
           </div>
           
-          <nav className="flex-1 px-4 space-y-2 mt-4">
-            <Link href="/dashboard" className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-neutral-400 hover:text-white hover:bg-neutral-800/50 transition-colors">
-              <Home size={18} /> Dashboard
+          <nav className="flex-1 px-4 py-8 space-y-2">
+            <Link href="/dashboard" className="flex items-center gap-3 px-4 py-3 text-neutral-400 hover:text-white hover:bg-white/5 rounded-xl transition-all group">
+              <Home className="w-5 h-5 group-hover:scale-110 transition-transform" />
+              <span className="font-medium">Dashboard</span>
             </Link>
-            <Link href="/save" className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-neutral-400 hover:text-white hover:bg-neutral-800/50 transition-colors">
-              <LinkIcon size={18} /> Save & Process
+            <Link href="/save" className="flex items-center gap-3 px-4 py-3 text-neutral-400 hover:text-white hover:bg-white/5 rounded-xl transition-all group">
+              <LinkIcon className="w-5 h-5 group-hover:scale-110 transition-transform" />
+              <span className="font-medium">Save & Process</span>
             </Link>
-            <Link href="/import" className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-neutral-400 hover:text-white hover:bg-neutral-800/50 transition-colors">
-              <DownloadCloud size={18} /> Import Instagram
+            <Link href="/import" className="flex items-center gap-3 px-4 py-3 text-neutral-400 hover:text-white hover:bg-white/5 rounded-xl transition-all group">
+              <DownloadCloud className="w-5 h-5 group-hover:scale-110 transition-transform" />
+              <span className="font-medium">Import Instagram</span>
             </Link>
           </nav>
           
-          <div className="p-4 border-t border-neutral-800 mt-auto">
-            <button className="flex items-center gap-3 px-3 py-2 w-full text-left rounded-lg text-neutral-500 hover:text-white transition-colors">
-              <Settings size={18} /> Settings
-            </button>
+          <div className="p-4 border-t border-neutral-800 space-y-4">
+            <Link href="/settings" className="flex items-center gap-3 px-4 py-3 text-neutral-400 hover:text-white hover:bg-white/5 rounded-xl transition-all group">
+              <Settings className="w-5 h-5 group-hover:rotate-90 transition-transform duration-300" />
+              <span className="font-medium">Settings</span>
+            </Link>
+            <SidebarProfile />
           </div>
         </aside>
 
         {/* Main Content Area */}
         <main className="flex-1 flex flex-col h-full overflow-y-auto relative bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-neutral-900 via-neutral-950 to-black">
-          {children}
+          <Providers>
+            {children}
+          </Providers>
         </main>
       </body>
     </html>

@@ -2,8 +2,10 @@
 
 import { useState } from 'react';
 import { Link as LinkIcon, AlertCircle, Loader2, CheckCircle2 } from 'lucide-react';
+import { useSession } from "next-auth/react";
 
 export default function SavePage() {
+  const { data: session } = useSession();
   const [url, setUrl] = useState('');
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [message, setMessage] = useState('');
@@ -19,7 +21,8 @@ export default function SavePage() {
       const res = await fetch('http://localhost:8000/api/ingestion/save-url', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${session?.user?.email}`
         },
         body: JSON.stringify({ url })
       });

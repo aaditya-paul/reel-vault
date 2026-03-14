@@ -1,9 +1,11 @@
 'use client';
 
-import { useState } from 'react';
-import { DownloadCloud, FileArchive, Loader2, AlertCircle } from 'lucide-react';
+import { useState, useCallback } from 'react';
+import { UploadCloud, FileArchive, Loader2, CheckCircle, AlertCircle, DownloadCloud } from 'lucide-react';
+import { useSession } from "next-auth/react";
 
 export default function ImportPage() {
+  const { data: session } = useSession();
   const [file, setFile] = useState<File | null>(null);
   const [status, setStatus] = useState<'idle' | 'uploading' | 'processing' | 'error' | 'success'>('idle');
   const [progress, setProgress] = useState(0);
@@ -26,6 +28,9 @@ export default function ImportPage() {
     try {
       const res = await fetch('http://localhost:8000/api/ingestion/import-instagram', {
         method: 'POST',
+        headers: {
+            'Authorization': `Bearer ${session?.user?.email}`
+        },
         body: formData,
       });
       
@@ -90,9 +95,9 @@ export default function ImportPage() {
             </button>
             
             {status === 'error' && (
-              <div className="mt-4 p-4 rounded-xl bg-red-500/10 border border-red-500/20 flex items-start gap-3 w-full text-left">
-                <AlertCircle className="text-red-400 mt-0.5 shrink-0" size={20} />
-                <div className="text-red-300 text-sm">{errorMsg}</div>
+              <div className="flex items-center gap-3">
+                <AlertCircle className="w-6 h-6 text-red-400" />
+                <span className="text-white text-lg font-medium">{errorMsg}</span>
               </div>
             )}
           </>

@@ -6,8 +6,8 @@ from typing import List, Optional
 import os
 
 from database import get_db
-import models
-from routers.items import get_current_user_id
+from models import SavedItem
+from dependencies import get_current_user
 
 # In production this should be a singleton client from a services module
 from google import genai
@@ -43,11 +43,14 @@ def get_embedding(text: str) -> List[float]:
         return [0.0] * 768
 
 @router.post("")
-def search_vault(search: SearchQuery, db: Session = Depends(get_db), user_id: int = Depends(get_current_user_id)):
-    """Search the user's vault using semantic similarity (pgvector)."""
+def search_vault(search: SearchQuery, db: Session = Depends(get_db), user_id: int = Depends(get_current_user)):
+    """
+    Search the user's vault using vector similarity search on pgvector.
+    If query is empty, gracefully falls back to recent items.
+    """
     if not search.query.strip():
         # Fallback to recent items if empty query
-        items = db.query(models.SavedItem).filter(models.SavedItem.user_id == user_id).order_by(models.SavedItem.created_at.desc()).limit(search.limit).all()
+        items = db.query(SavedItem).filter(SavedItem.user_id == user_id).order_by(SavedItem.created_at.desc()).limit(search.limit).all()
     else:
         # 1. Convert text query to embedding
         query_vector = get_embedding(search.query)
